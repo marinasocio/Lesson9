@@ -1,120 +1,3 @@
-// function makeRequest(method, url, cb) {
-// 	try {
-// 		const xhr = new XMLHttpRequest();
-// 		xhr.open(method, url);
-
-// 		xhr.addEventListener('load', () => {
-// 			if (Math.floor(xhr.status / 100) !== 2) {
-// 				console.log('error');
-// 				cb(`Error. Status code: ${xhr.status}`);
-// 			}
-
-// 			const responce = JSON.parse(xhr.responseText);
-// 			cb(null, responce);
-// 		});
-
-// 		xhr.addEventListener('error', () => {
-// 			console.log('error');
-// 		});
-
-// 		xhr.send();
-// 	} catch (err) {
-//     cb(err);
-//   }
-// }
-
-// makeRequest('GET', 'https://jsonplaceholder.typicode.com/posts', (err, res) => {
-// 	if (err) {
-// 		alert(err);
-// 		return;
-// 	}
-// 	console.log(res);
-// });
-
-//!!!!!!!!!!!!!!!!!!!!
-
-// function myHttp() {
-// 	return {
-// 		get(url, cb) {
-// 			try {
-// 				const xhr = new XMLHttpRequest();
-// 				xhr.open('GET', url);
-
-// 				xhr.addEventListener('load', () => {
-// 					if (Math.floor(xhr.status / 100) !== 2) {
-// 						console.log('error');
-// 						cb(`Error. Status code: ${xhr.status}`);
-// 					}
-
-// 					const responce = JSON.parse(xhr.responseText);
-// 					cb(null, responce);
-// 				});
-
-// 				xhr.addEventListener('error', () => {
-// 					console.log('error');
-// 				});
-
-// 				xhr.send();
-// 			} catch (err) {
-// 				cb(err);
-// 			}
-// 		},
-// 		post({ url, body, headers }, cb) {
-// 			try {
-// 				const xhr = new XMLHttpRequest();
-// 				xhr.open('POST', url);
-
-// 				xhr.addEventListener('load', () => {
-// 					if (Math.floor(xhr.status / 100) !== 2) {
-// 						console.log('error');
-// 						cb(`Error. Status code: ${xhr.status}`);
-// 					}
-
-// 					const responce = JSON.parse(xhr.responseText);
-// 					cb(null, responce);
-// 				});
-
-// 				xhr.addEventListener('error', () => {
-// 					console.log('error');
-// 				});
-
-// 				if (headers) {
-// 					Object.entries(headers).forEach(([ key, value ]) => {
-//             xhr.setRequestHeader(key, value);
-// 					})
-// 				}
-
-// 				xhr.send(JSON.stringify(body));
-// 			} catch (err) {
-// 				cb(err);
-// 			}
-// 		}
-// 	};
-// }
-
-// const http = myHttp();
-
-// http.post(
-// 	{
-// 		url: 'https://jsonplaceholder.typicode.com/todos',
-// 		body: {
-// 			userId: 234536,
-// 			title: 'delectus aut autem',
-// 			completed: false
-// 		},
-// 		headers: {
-// 			'Content-Type': 'application/json'
-// 		}
-// 	},
-// 	(err, res) => {
-// 		if (err) {
-// 			alert(err);
-// 			return;
-// 		}
-// 		console.log(res);
-// 	}
-// );
-
 // Custom Http Module
 function myHttp() {
 	return {
@@ -174,14 +57,15 @@ function myHttp() {
 const http = myHttp();
 const newsService = (function() {
 	const apiKey = '9c27b0f722b84da5a08312d2b125351b';
-	const apiUrl = 'https://newsapi.org/v2';
+  const apiUrl = 'https://newsapi.org/v2';
 
 	return {
-		topHeadlines(e, category, cb) {
-			var e = document.getElementById('country');
+		topHeadlines(country, category, cb) {
+			const e = document.getElementById('country');
 			country = e.options[e.selectedIndex].value;
-      // console.log(e.options[e.selectedIndex].value);
-      // console.log(e.options[e.selectedIndex]);
+			const t = document.getElementById('category');
+			category = t.options[t.selectedIndex].value;
+
 			http.get(`${apiUrl}/top-headlines?country=${country}&category=${category}&apiKey=${apiKey}`, cb);
 		},
 		everything(text) {
@@ -199,8 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function loadNews() {
-	// if ()
-	newsService.topHeadlines(country, category, onGetResponse);
+  newsService.topHeadlines(country, category, onGetResponse);
 }
 
 function onGetResponse(err, res) {
